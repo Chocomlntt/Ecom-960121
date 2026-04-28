@@ -1,0 +1,202 @@
+[
+  {
+    "id": 1,
+    "name": "Classic Cotton T-Shirt",
+    "image": "assets/img/shop_01.jpg",
+    "sizes": ["M", "L", "XL"],
+    "colors": ["red", "blue", "black", "white", "green"],
+    "rating": 3,
+    "price": 250.00,
+    "link": "shop-single.html"
+  },
+  {
+    "id": 2,
+    "name": "Slim Fit Polo Shirt",
+    "image": "assets/img/shop_02.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["black", "white", "blue"],
+    "rating": 4,
+    "price": 180.00,
+    "link": "shop-single.html"
+  },
+  {
+    "id": 3,
+    "name": "Casual Hoodie",
+    "image": "assets/img/shop_03.jpg",
+    "sizes": ["M", "L", "XL"],
+    "colors": ["gray", "black"],
+    "rating": 5,
+    "price": 320.00,
+    "link": "shop-single.html"
+  },
+  {
+    "id": 4,
+    "name": "Denim Jacket",
+    "image": "assets/img/shop_04.jpg",
+    "sizes": ["M", "L"],
+    "colors": ["blue", "black"],
+    "rating": 4,
+    "price": 450.00,
+    "link": "shop-single.html"
+  },
+  {
+    "id": 5,
+    "name": "Sport Shorts",
+    "image": "assets/img/shop_05.jpg",
+    "sizes": ["S", "M", "L", "XL"],
+    "colors": ["black", "red", "blue"],
+    "rating": 3,
+    "price": 120.00,
+    "link": "shop-single.html"
+  },
+  {
+    "id": 6,
+    "name": "Running Sneakers",
+    "image": "assets/img/shop_06.jpg",
+    "sizes": ["40", "41", "42", "43"],
+    "colors": ["white", "black"],
+    "rating": 5,
+    "price": 600.00,
+    "link": "shop-single.html"
+  },
+  {
+    "id": 7,
+    "name": "Leather Belt",
+    "image": "assets/img/shop_07.jpg",
+    "sizes": ["M", "L"],
+    "colors": ["brown", "black"],
+    "rating": 4,
+    "price": 90.00,
+    "link": "shop-single.html"
+  },
+  {
+    "id": 8,
+    "name": "Casual Jeans",
+    "image": "assets/img/shop_08.jpg",
+    "sizes": ["30", "32", "34", "36"],
+    "colors": ["blue", "black"],
+    "rating": 4,
+    "price": 300.00,
+    "link": "shop-single.html"
+  },
+  {
+    "id": 9,
+    "name": "Formal Shirt",
+    "image": "assets/img/shop_09.jpg",
+    "sizes": ["M", "L", "XL"],
+    "colors": ["white", "blue"],
+    "rating": 5,
+    "price": 270.00,
+    "link": "shop-single.html"
+  },
+  {
+    "id": 10,
+    "name": "Summer Hat",
+    "image": "assets/img/shop_10.jpg",
+    "sizes": ["Free Size"],
+    "colors": ["beige", "white"],
+    "rating": 3,
+    "price": 70.00,
+    "link": "shop-single.html"
+  },
+  {
+    "id": 11,
+    "name": "Wool Sweater",
+    "image": "assets/img/shop_11.jpg",
+    "sizes": ["M", "L"],
+    "colors": ["gray", "green"],
+    "rating": 4,
+    "price": 350.00,
+    "link": "shop-single.html"
+  },
+  {
+    "id": 12,
+    "name": "Track Pants",
+    "image": "assets/img/shop_10.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["black", "blue"],
+    "rating": 4,
+    "price": 200.00,
+    "link": "shop-single.html"
+  },
+  {
+    "id": 13,
+    "name": "Canvas Backpack",
+    "image": "assets/img/shop_09.jpg",
+    "sizes": ["Free Size"],
+    "colors": ["green", "black"],
+    "rating": 5,
+    "price": 280.00,
+    "link": "shop-single.html"
+  },
+  {
+    "id": 14,
+    "name": "Sports Cap",
+    "image": "assets/img/shop_08.jpg",
+    "sizes": ["Free Size"],
+    "colors": ["red", "blue"],
+    "rating": 3,
+    "price": 60.00,
+    "link": "shop-single.html"
+  },
+  {
+    "id": 15,
+    "name": "Leather Wallet",
+    "image": "assets/img/shop_07.jpg",
+    "sizes": ["Free Size"],
+    "colors": ["brown", "black"],
+    "rating": 5,
+    "price": 150.00,
+    "link": "shop-single.html"
+  },
+  {
+    "id": 16,
+    "name": "Flip Flops",
+    "image": "assets/img/shop_06.jpg",
+    "sizes": ["40", "41", "42"],
+    "colors": ["black", "blue"],
+    "rating": 3,
+    "price": 50.00,
+    "link": "shop-single.html"
+  },
+  {
+    "id": 17,
+    "name": "Winter Coat",
+    "image": "assets/img/shop_05.jpg",
+    "sizes": ["M", "L", "XL"],
+    "colors": ["black", "gray"],
+    "rating": 5,
+    "price": 700.00,
+    "link": "shop-single.html"
+  },
+  {
+    "id": 18,
+    "name": "Gym Tank Top",
+    "image": "assets/img/shop_04.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["white", "black"],
+    "rating": 4,
+    "price": 110.00,
+    "link": "shop-single.html"
+  },
+  {
+    "id": 19,
+    "name": "Casual Blazer",
+    "image": "assets/img/shop_03.jpg",
+    "sizes": ["M", "L"],
+    "colors": ["navy", "black"],
+    "rating": 4,
+    "price": 500.00,
+    "link": "shop-single.html"
+  },
+  {
+    "id": 20,
+    "name": "Graphic T-Shirt",
+    "image": "assets/img/shop_02.jpg",
+    "sizes": ["S", "M", "L", "XL"],
+    "colors": ["white", "black", "yellow"],
+    "rating": 3,
+    "price": 140.00,
+    "link": "shop-single.html"
+  }
+]
