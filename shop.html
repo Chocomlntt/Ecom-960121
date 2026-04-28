@@ -823,89 +823,122 @@ https://templatemo.com/tm-559-zay-shop
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/templatemo.js"></script>
     <script src="assets/js/custom.js"></script>
-    <script> async function loadProducts() {
-  const container = document.getElementById("product-container");
-
+    <script>
+    // Entry point (Step 1: UI → request data)
+function requestProducts() {
+  // This function starts the whole process
+  // It calls fetchProducts to get data from JSON
+  fetchProducts("assets/data/products.jason");
+}
+// Step 2: Fetch data from JSON file (Client → Server)
+async function fetchProducts(part) {
   try {
-    const response = await fetch("assets/data/products.json");
+    // Send HTTP request to get JSON file
+    const response = await fetch(part);
 
+    // Check if request is successful
     if (!response.ok) {
       throw new Error("Failed to fetch data");
     }
 
+    // Convert response into JavaScript object (array of products)
     const products = await response.json();
 
-    container.innerHTML = ""; // clear existing content
-
-    products.forEach(product => {
-      const stars = generateStars(product.rating);
-
-      const card = `
-        <div class="col-md-4">
-          <div class="card mb-4 product-wap rounded-0">
-            
-            <div class="card rounded-0">
-              <img class="card-img rounded-0 img-fluid" src="${product.image}">
-              
-              <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
-                <ul class="list-unstyled">
-                  <li><a class="btn btn-success text-white" href="${product.link}"><i class="far fa-heart"></i></a></li>
-                  <li><a class="btn btn-success text-white mt-2" href="${product.link}"><i class="far fa-eye"></i></a></li>
-                  <li><a class="btn btn-success text-white mt-2" href="${product.link}"><i class="fas fa-cart-plus"></i></a></li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="card-body">
-              <a href="${product.link}" class="h3 text-decoration-none">${product.name}</a>
-
-              <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                <li>${product.sizes.join("/")}</li>
-                <li class="pt-2">
-                  ${generateColorDots(product.colors)}
-                </li>
-              </ul>
-
-              <ul class="list-unstyled d-flex justify-content-center mb-1">
-                <li>${stars}</li>
-              </ul>
-
-              <p class="text-center mb-0">$${product.price.toFixed(2)}</p>
-            </div>
-
-          </div>
-        </div>
-      `;
-
-      container.innerHTML += card;
-    });
+    // Pass data to UI renderer (Step 3)
+    renderUI(products);
 
   } catch (error) {
-    console.error(error);
+    console.error("Fetch Error:", error);
+
+    // If error happens, show message on UI
+    const container = document.getElementById("product-container");
     container.innerHTML = `
-      <p class="text-danger text-center">Failed to load products. Please try again later.</p>
+      <p class="text-danger text-center">
+        Failed to load products. Please try again later.
+      </p>
     `;
   }
 }
 
-// Helper: generate star rating
+// Step 3: Render data to HTML (Controller → View)
+function renderUI(products) {
+  const container = document.getElementById("product-container");
+
+  // Clear old content
+  container.innerHTML = "";
+
+  // Loop through each product object
+  products.forEach(product => {
+
+    // Generate stars dynamically
+    const stars = generateStars(product.rating);
+
+    // Generate product card HTML
+    const card = `
+      <div class="col-md-4">
+        <div class="card mb-4 product-wap rounded-0">
+
+          <div class="card rounded-0">
+            <img class="card-img rounded-0 img-fluid" src="${product.image}">
+            
+            <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+              <ul class="list-unstyled">
+                <li><a class="btn btn-success text-white" href="${product.link}"><i class="far fa-heart"></i></a></li>
+                <li><a class="btn btn-success text-white mt-2" href="${product.link}"><i class="far fa-eye"></i></a></li>
+                <li><a class="btn btn-success text-white mt-2" href="${product.link}"><i class="fas fa-cart-plus"></i></a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <a href="${product.link}" class="h3 text-decoration-none">${product.name}</a>
+
+            <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+              <li>${product.sizes.join("/")}</li>
+              <li class="pt-2">
+                ${generateColorDots(product.colors)}
+              </li>
+            </ul>
+
+            <ul class="list-unstyled d-flex justify-content-center mb-1">
+              <li>${stars}</li>
+            </ul>
+
+            <p class="text-center mb-0">$${product.price.toFixed(2)}</p>
+          </div>
+
+        </div>
+      </div>
+    `;
+
+    // Append card to container
+    container.innerHTML += card;
+  });
+}
+
+// Helper: Generate star rating UI
 function generateStars(rating) {
   let stars = "";
+
+  // Loop 1–5 stars
   for (let i = 1; i <= 5; i++) {
+    // If star <= rating → yellow, else gray
     stars += `<i class="fa fa-star ${i <= rating ? "text-warning" : "text-muted"}"></i>`;
   }
+
   return stars;
 }
 
-// Helper: generate color dots
+// Helper: Generate color dots UI
 function generateColorDots(colors) {
+  // Map each color into span element
   return colors.map(color => {
     return `<span class="product-color-dot color-dot-${color} float-left rounded-circle ml-1"></span>`;
   }).join("");
 }
 
-// Call function when page loads
-document.addEventListener("DOMContentLoaded", loadProducts);</script>
+// Start process when page is loaded
+document.addEventListener("DOMContentLoaded", requestProducts);</script>
     <!-- End Script -->
 </body>
 

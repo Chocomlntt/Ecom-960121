@@ -198,5 +198,15 @@
     "rating": 3,
     "price": 140.00,
     "link": "shop-single.html"
+  },
+  {
+    "id": 1,
+    "name": "Classic Cotton T-Shirt",
+    "image": "assets/img/shop_01.jpg",
+    "sizes": ["M", "L", "XL"],
+    "colors": ["red", "blue", "black", "white", "green"],
+    "rating": 3,
+    "price": 250.00,
+    "link": "shop-single.html"
   }
 ]
