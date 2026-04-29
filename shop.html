@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Zay Shop - Product Listing Page</title>
+    <title>Jef Shop - Product Listing Page</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -18,9 +18,9 @@
     <link rel="stylesheet" href="assets/css/fontawesome.min.css">
 <!--
     
-TemplateMo 559 Zay Shop
+TemplateMo 559 Jef Shop
 
-https://templatemo.com/tm-559-zay-shop
+https://templatemo.com/tm-559-jef-shop
 
 -->
 </head>
@@ -53,7 +53,7 @@ https://templatemo.com/tm-559-zay-shop
         <div class="container d-flex justify-content-between align-items-center">
 
             <a class="navbar-brand text-success logo h1 align-self-center" href="index.html">
-                Zay
+                Jef
             </a>
 
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -111,11 +111,14 @@ https://templatemo.com/tm-559-zay-shop
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="" method="get" class="modal-content modal-body border-0 p-0">
-                <div class="input-group mb-2">
-                    <input type="text" class="form-control" id="inputModalSearch" name="q" placeholder="Search ...">
-                    <button type="submit" class="input-group-text bg-success text-light">
-                        <i class="fa fa-fw fa-search text-white"></i>
-                    </button>
+                <div class="position-relative mb-2">
+                    <div class="input-group mb-0">
+                        <input type="text" class="form-control" id="inputModalSearch" name="q" placeholder="Search ..." autocomplete="off">
+                        <button type="submit" class="input-group-text bg-success text-light">
+                            <i class="fa fa-fw fa-search text-white"></i>
+                        </button>
+                    </div>
+                    <div id="search-suggestions" class="search-suggestions d-none"></div>
                 </div>
             </form>
         </div>
@@ -728,7 +731,7 @@ https://templatemo.com/tm-559-zay-shop
             <div class="row">
 
                 <div class="col-md-4 pt-5">
-                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">Zay Shop</h2>
+                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">Jef Shop</h2>
                     <ul class="list-unstyled text-light footer-link-list">
                         <li>
                             <i class="fas fa-map-marker-alt fa-fw"></i>
@@ -828,7 +831,7 @@ https://templatemo.com/tm-559-zay-shop
 function requestProducts() {
   // This function starts the whole process
   // It calls fetchProducts to get data from JSON
-  fetchProducts("assets/data/products.jason");
+  fetchProducts("assets/data/products.json");
 }
 // Step 2: Fetch data from JSON file (Client → Server)
 async function fetchProducts(part) {
@@ -843,6 +846,7 @@ async function fetchProducts(part) {
 
     // Convert response into JavaScript object (array of products)
     const products = await response.json();
+    allProducts = products;
 
     // Pass data to UI renderer (Step 3)
     renderUI(products);
@@ -937,8 +941,144 @@ function generateColorDots(colors) {
   }).join("");
 }
 
+let allProducts = [];
+
+function filterProductsByName(query) {
+  const container = document.getElementById("product-container");
+  if (!container) return;
+
+  const lowerQuery = query.trim().toLowerCase();
+  const cards = Array.from(container.querySelectorAll('.col-md-4'));
+  let visibleCount = 0;
+
+  cards.forEach(card => {
+    const name = card.querySelector('.card-body a')?.textContent.trim().toLowerCase() || '';
+    const visible = !lowerQuery || name.includes(lowerQuery);
+    card.style.display = visible ? '' : 'none';
+    if (visible) visibleCount += 1;
+  });
+
+  const existingMessage = document.getElementById('no-results-message');
+  if (visibleCount === 0) {
+    if (!existingMessage) {
+      const message = document.createElement('div');
+      message.id = 'no-results-message';
+      message.className = 'col-12 text-center py-5';
+      message.innerHTML = '<h4>No result</h4>';
+      container.appendChild(message);
+    }
+  } else if (existingMessage) {
+    existingMessage.remove();
+  }
+}
+
+function getSuggestionStarHtml(rating) {
+  let stars = '';
+  for (let i = 1; i <= 5; i++) {
+    stars += `<i class="fa fa-star ${i <= rating ? 'text-warning' : 'text-muted'}"></i>`;
+  }
+  return stars;
+}
+
+function updateSearchSuggestions(query) {
+  const suggestionBox = document.getElementById('search-suggestions');
+  if (!suggestionBox) return;
+
+  const value = query.trim().toLowerCase();
+  if (!value) {
+    suggestionBox.classList.add('d-none');
+    suggestionBox.innerHTML = '';
+    return;
+  }
+
+  const matches = allProducts.filter(product => product.name.toLowerCase().includes(value)).slice(0, 8);
+  if (matches.length === 0) {
+    suggestionBox.innerHTML = '<div class="list-group-item suggestion-empty">No result</div>';
+    suggestionBox.classList.remove('d-none');
+    return;
+  }
+
+  suggestionBox.innerHTML = matches.map(product => `
+    <button type="button" class="list-group-item list-group-item-action suggestion-item">
+      <div class="d-flex align-items-center">
+        <img src="${product.image}" alt="${product.name}" class="suggestion-image me-3">
+        <div class="suggestion-details text-start">
+          <div class="suggestion-name fw-semibold">${product.name}</div>
+          <div class="suggestion-meta small text-muted">${getSuggestionStarHtml(product.rating)} <span class="suggestion-price ms-2">$${product.price.toFixed(2)}</span></div>
+        </div>
+      </div>
+    </button>
+  `).join('');
+  suggestionBox.classList.remove('d-none');
+}
+
+function setupSearchHandlers() {
+  const searchForm = document.querySelector('#templatemo_search form');
+  const modalInput = document.getElementById('inputModalSearch');
+  const mobileInput = document.getElementById('inputMobileSearch');
+  const modalElement = document.getElementById('templatemo_search');
+  const suggestionBox = document.getElementById('search-suggestions');
+
+  if (searchForm) {
+    searchForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      filterProductsByName(modalInput?.value || '');
+      updateSearchSuggestions('');
+      if (modalElement && window.bootstrap) {
+        const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+        modalInstance.hide();
+      }
+    });
+  }
+
+  if (modalInput) {
+    modalInput.addEventListener('input', function () {
+      updateSearchSuggestions(modalInput.value);
+    });
+
+    modalInput.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        filterProductsByName(modalInput.value);
+        updateSearchSuggestions('');
+        if (modalElement && window.bootstrap) {
+          const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+          modalInstance.hide();
+        }
+      }
+    });
+  }
+
+  if (suggestionBox) {
+    suggestionBox.addEventListener('click', function (event) {
+      const item = event.target.closest('.suggestion-item');
+      if (!item) return;
+      const value = item.textContent.trim();
+      if (modalInput) modalInput.value = value;
+      filterProductsByName(value);
+      updateSearchSuggestions('');
+      if (modalElement && window.bootstrap) {
+        const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+        modalInstance.hide();
+      }
+    });
+  }
+
+  if (mobileInput) {
+    mobileInput.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        filterProductsByName(mobileInput.value);
+      }
+    });
+  }
+}
+
 // Start process when page is loaded
-document.addEventListener("DOMContentLoaded", requestProducts);</script>
+document.addEventListener("DOMContentLoaded", function () {
+  requestProducts();
+  setupSearchHandlers();
+});</script>
     <!-- End Script -->
 </body>
 
