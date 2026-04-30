@@ -89,9 +89,9 @@ https://templatemo.com/tm-559-jef-shop
                     <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
                         <i class="fa fa-fw fa-search text-dark mr-2"></i>
                     </a>
-                    <a class="nav-icon position-relative text-decoration-none" href="#">
+                    <a id="open-cart-sidebar" class="nav-icon position-relative text-decoration-none" href="#">
                         <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
-                        <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span>
+                        <span id="cart-count" class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">0</span>
                     </a>
                     <a class="nav-icon position-relative text-decoration-none" href="#">
                         <i class="fa fa-fw fa-user text-dark mr-3"></i>
@@ -124,6 +124,27 @@ https://templatemo.com/tm-559-jef-shop
         </div>
     </div>
 
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-sidebar-header d-flex justify-content-between align-items-center p-3 border-bottom">
+            <div>
+                <h5 class="mb-0">Your Cart</h5>
+                <p id="cart-sidebar-count" class="mb-0 text-muted small">0 items</p>
+            </div>
+            <button type="button" id="close-cart-sidebar" class="btn-close" aria-label="Close"></button>
+        </div>
+        <div class="cart-sidebar-body p-3">
+            <div id="cart-items-container"></div>
+            <div id="cart-empty-message" class="text-center text-muted">Your cart is empty.</div>
+        </div>
+        <div class="cart-sidebar-footer p-3 border-top">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <strong>Total</strong>
+                <strong id="cart-total">$0.00</strong>
+            </div>
+            <button type="button" class="btn btn-success w-100" id="checkout-button">Checkout</button>
+        </div>
+    </div>
+    <div id="cart-sidebar-backdrop" class="cart-sidebar-backdrop d-none"></div>
 
 
     <!-- Start Content -->
@@ -889,7 +910,7 @@ function renderUI(products) {
               <ul class="list-unstyled">
                 <li><a class="btn btn-success text-white" href="${product.link}"><i class="far fa-heart"></i></a></li>
                 <li><a class="btn btn-success text-white mt-2" href="${product.link}"><i class="far fa-eye"></i></a></li>
-                <li><a class="btn btn-success text-white mt-2" href="${product.link}"><i class="fas fa-cart-plus"></i></a></li>
+                <li><button type="button" class="btn btn-success text-white mt-2 add-to-cart" data-id="${product.id}" aria-label="Add ${product.name} to cart"><i class="fas fa-cart-plus"></i></button></li>
               </ul>
             </div>
           </div>
@@ -1078,7 +1099,188 @@ function setupSearchHandlers() {
 document.addEventListener("DOMContentLoaded", function () {
   requestProducts();
   setupSearchHandlers();
-});</script>
+});
+    </script>
+    <script>
+const CART_KEY = 'jefshop_cart';
+let cart = {};
+
+function loadCart() {
+  try {
+    cart = JSON.parse(localStorage.getItem(CART_KEY)) || {};
+  } catch (error) {
+    cart = {};
+  }
+  updateCartBadge();
+}
+
+function saveCart() {
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+}
+
+function getCartQuantity() {
+  return Object.values(cart).reduce((total, qty) => total + Number(qty || 0), 0);
+}
+
+function updateCartBadge() {
+  const badge = document.getElementById('cart-count');
+  if (!badge) return;
+  badge.textContent = getCartQuantity();
+}
+
+function handleAddToCart(productId) {
+  if (!productId) return;
+
+  if (cart[productId]) {
+    cart[productId] = Number(cart[productId]) + 1;
+  } else {
+    cart[productId] = 1;
+  }
+
+  saveCart();
+  updateCartBadge();
+  renderCartSidebar();
+}
+
+function getCartItems() {
+  const items = [];
+  for (const productId of Object.keys(cart)) {
+    const product = allProducts.find(prod => String(prod.id) === productId);
+    if (product && cart[productId] > 0) {
+      items.push({
+        ...product,
+        quantity: Number(cart[productId]),
+        subtotal: product.price * Number(cart[productId])
+      });
+    }
+  }
+  return items;
+}
+
+function getCartTotalAmount() {
+  return getCartItems().reduce((sum, item) => sum + item.subtotal, 0);
+}
+
+function updateCartSidebarCount() {
+  const countLabel = document.getElementById('cart-sidebar-count');
+  if (!countLabel) return;
+  const quantity = getCartQuantity();
+  countLabel.textContent = `${quantity} item${quantity === 1 ? '' : 's'}`;
+}
+
+function renderCartSidebar() {
+  const container = document.getElementById('cart-items-container');
+  const emptyMessage = document.getElementById('cart-empty-message');
+  const totalLabel = document.getElementById('cart-total');
+  const items = getCartItems();
+
+  if (!container || !totalLabel || !emptyMessage) return;
+
+  if (items.length === 0) {
+    container.innerHTML = '';
+    emptyMessage.classList.remove('d-none');
+    totalLabel.textContent = '$0.00';
+  } else {
+    emptyMessage.classList.add('d-none');
+    container.innerHTML = items.map(item => `
+      <div class="cart-item d-flex align-items-center mb-3">
+        <img src="${item.image}" alt="${item.name}" class="cart-item-img me-3">
+        <div class="flex-grow-1">
+          <div class="cart-item-name fw-semibold">${item.name}</div>
+          <div class="cart-item-price text-muted small">$${item.price.toFixed(2)} x ${item.quantity}</div>
+          <div class="btn-group btn-group-sm mt-2" role="group">
+            <button type="button" class="btn btn-outline-secondary cart-item-decrease" data-id="${item.id}">-</button>
+            <button type="button" class="btn btn-outline-secondary cart-item-increase" data-id="${item.id}">+</button>
+          </div>
+        </div>
+        <div class="cart-item-subtotal text-end fw-semibold ms-3">$${item.subtotal.toFixed(2)}</div>
+      </div>
+    `).join('');
+    totalLabel.textContent = `$${getCartTotalAmount().toFixed(2)}`;
+  }
+  updateCartSidebarCount();
+}
+
+function openCartSidebar() {
+  document.getElementById('cart-sidebar')?.classList.add('open');
+  const backdrop = document.getElementById('cart-sidebar-backdrop');
+  if (backdrop) {
+    backdrop.classList.remove('d-none');
+    backdrop.classList.add('open');
+  }
+  renderCartSidebar();
+}
+
+function closeCartSidebar() {
+  document.getElementById('cart-sidebar')?.classList.remove('open');
+  const backdrop = document.getElementById('cart-sidebar-backdrop');
+  if (backdrop) {
+    backdrop.classList.remove('open');
+    backdrop.classList.add('d-none');
+  }
+}
+
+const productContainer = document.getElementById('product-container');
+if (productContainer) {
+  productContainer.addEventListener('click', function (event) {
+    const button = event.target.closest('.add-to-cart');
+    if (!button) return;
+    const productId = button.dataset.id;
+    handleAddToCart(productId);
+  });
+}
+
+const openCartButton = document.getElementById('open-cart-sidebar');
+if (openCartButton) {
+  openCartButton.addEventListener('click', function (event) {
+    event.preventDefault();
+    openCartSidebar();
+  });
+}
+
+const cartItemsContainer = document.getElementById('cart-items-container');
+if (cartItemsContainer) {
+  cartItemsContainer.addEventListener('click', function (event) {
+    const increaseButton = event.target.closest('.cart-item-increase');
+    const decreaseButton = event.target.closest('.cart-item-decrease');
+    const button = increaseButton || decreaseButton;
+    if (!button) return;
+
+    const productId = button.dataset.id;
+    if (!productId) return;
+
+    if (decreaseButton) {
+      if (cart[productId] > 1) {
+        cart[productId] = Number(cart[productId]) - 1;
+      } else {
+        delete cart[productId];
+      }
+    }
+
+    if (increaseButton) {
+      cart[productId] = cart[productId] ? Number(cart[productId]) + 1 : 1;
+    }
+
+    saveCart();
+    updateCartBadge();
+    renderCartSidebar();
+  });
+}
+
+const closeCartButton = document.getElementById('close-cart-sidebar');
+if (closeCartButton) {
+  closeCartButton.addEventListener('click', closeCartSidebar);
+}
+
+const cartBackdrop = document.getElementById('cart-sidebar-backdrop');
+if (cartBackdrop) {
+  cartBackdrop.addEventListener('click', closeCartSidebar);
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  loadCart();
+});
+    </script>
     <!-- End Script -->
 </body>
 
