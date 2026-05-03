@@ -183,6 +183,7 @@ https://templatemo.com/tm-559-jef-shop
                             <li><a class="text-decoration-none" href="#">Bag</a></li>
                             <li><a class="text-decoration-none" href="#">Sweather</a></li>
                             <li><a class="text-decoration-none" href="#">Sunglass</a></li>
+                            <li><a class="text-decoration-none" href="#" onclick="getHat">Hat</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -1281,6 +1282,13 @@ window.addEventListener('DOMContentLoaded', function () {
   loadCart();
 });
     </script>
+    <script>
+async function getHat() {
+  const res = await fetch('/api/products?category=hat');
+  const data = await res.json();
+  console.log(data);
+}
+</script>
     <!-- End Script -->
 </body>
 

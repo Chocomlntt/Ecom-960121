@@ -1,28 +1,21 @@
-const fs = require("fs").promises;
-const path = require("path");
-
-/**
- * Service: Responsible for data fetching / business logic
- */
-async function getAllProducts() {
+async function getAllProducts(category) {
   try {
-    // Resolve path to JSON file
     const filePath = path.join(__dirname, "../data/products.json");
-
-    // Read file asynchronously
     const data = await fs.readFile(filePath, "utf-8");
-
-    // Convert JSON string → JS object
     const products = JSON.parse(data);
 
+    // ✅ ถ้ามี category → filter
+    if (category) {
+      return products.filter(
+        (p) => p.category.toLowerCase() === category.toLowerCase()
+      );
+    }
+
+    // ✅ ไม่มี → return ทั้งหมด
     return products;
 
   } catch (error) {
     console.error("Service Error:", error);
-    throw error; // Let controller handle response
+    throw error;
   }
 }
-
-module.exports = {
-  getAllProducts
-};
