@@ -1,10 +1,12 @@
-//john1@example.com    | 123
-//emma2@example.com    | 1234
-//liam3@example.com    | 123456
-//olivia4@example.com  | 12345678
-//noah5@example.com    | password
-//ava6@example.com     | test
-//william7@example.com | 123456789
-//sophia8@example.com  | qwerty
-//james9@example.com   | 12345
-//mia10@example.com    | abc123
+| Email                                             | Password |
+| ------------------------------------------------- | -------- |
+| [alice@example.com](mailto:alice@example.com)     | 123456   |
+| [bob@example.com](mailto:bob@example.com)         | 12345678 |
+| [charlie@example.com](mailto:charlie@example.com) | password |
+| [david@example.com](mailto:david@example.com)     | 123      |
+| [emma@example.com](mailto:emma@example.com)       | test     |
+| [frank@example.com](mailto:frank@example.com)     | admin    |
+| [grace@example.com](mailto:grace@example.com)     | 1234     |
+| [henry@example.com](mailto:henry@example.com)     | 1        |
+| [irene@example.com](mailto:irene@example.com)     | 1234567  |
+| [jack@example.com](mailto:jack@example.com)       | 12345    |

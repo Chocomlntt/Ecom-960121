@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "email": "alice@example.com",
+    "password": "e10adc3949ba59abbe56e057f20f883e",
+    "firstName": "Alice",
+    "registeredAt": "2026-01-10"
+  },
+  {
+    "id": 2,
+    "email": "bob@example.com",
+    "password": "25d55ad283aa400af464c76d713c07ad",
+    "firstName": "Bob",
+    "registeredAt": "2026-01-12"
+  },
+  {
+    "id": 3,
+    "email": "charlie@example.com",
+    "password": "5f4dcc3b5aa765d61d8327deb882cf99",
+    "firstName": "Charlie",
+    "registeredAt": "2026-01-15"
+  },
+  {
+    "id": 4,
+    "email": "david@example.com",
+    "password": "202cb962ac59075b964b07152d234b70",
+    "firstName": "David",
+    "registeredAt": "2026-01-18"
+  },
+  {
+    "id": 5,
+    "email": "emma@example.com",
+    "password": "098f6bcd4621d373cade4e832627b4f6",
+    "firstName": "Emma",
+    "registeredAt": "2026-01-20"
+  },
+  {
+    "id": 6,
+    "email": "frank@example.com",
+    "password": "21232f297a57a5a743894a0e4a801fc3",
+    "firstName": "Frank",
+    "registeredAt": "2026-01-22"
+  },
+  {
+    "id": 7,
+    "email": "grace@example.com",
+    "password": "81dc9bdb52d04dc20036dbd8313ed055",
+    "firstName": "Grace",
+    "registeredAt": "2026-01-25"
+  },
+  {
+    "id": 8,
+    "email": "henry@example.com",
+    "password": "c4ca4238a0b923820dcc509a6f75849b",
+    "firstName": "Henry",
+    "registeredAt": "2026-01-27"
+  },
+  {
+    "id": 9,
+    "email": "irene@example.com",
+    "password": "8f14e45fceea167a5a36dedd4bea2543",
+    "firstName": "Irene",
+    "registeredAt": "2026-01-29"
+  },
+  {
+    "id": 10,
+    "email": "jack@example.com",
+    "password": "45c48cce2e2d7fbdea1afc51c7c6ad26",
+    "firstName": "Jack",
+    "registeredAt": "2026-02-01"
+  }
+]

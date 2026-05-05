@@ -93,9 +93,8 @@ https://templatemo.com/tm-559-jef-shop
                         <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
                         <span id="cart-count" class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">0</span>
                     </a>
-                    <a class="nav-icon position-relative text-decoration-none" href="#">
+                    <a class="nav-icon position-relative text-decoration-none" href="login.html">
                         <i class="fa fa-fw fa-user text-dark mr-3"></i>
-                        <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">+99</span>
                     </a>
                 </div>
             </div>
@@ -870,7 +869,7 @@ async function fetchProducts(part) {
     const products = await response.json();
 
     // Pass data to UI renderer (Step 3)
-    renderUI(products.data);
+    renderUI(products);
 
   } catch (error) {
     console.error("Fetch Error:", error);
