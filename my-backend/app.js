@@ -66,4 +66,32 @@ app.get('/api/products', async (req, res) => {
   }
 });
 
+app.post('/api/register', async (req, res) => {
+  console.log("🔥 REGISTER HIT");
+
+  const filePath = path.join(__dirname, 'data', 'users.json');
+  let users = [];
+
+  try {
+    const data = await fs.readFile(filePath, 'utf-8');
+    users = JSON.parse(data);
+  } catch {}
+
+  const { email, password, firstName, lastName } = req.body;
+
+  const hashed = md5(password);
+
+  users.push({
+    id: users.length + 1,
+    email,
+    password: hashed,
+    firstName,
+    lastName
+  });
+
+  await fs.writeFile(filePath, JSON.stringify(users, null, 2));
+
+  res.json({ message: "ok" });
+});
+
 module.exports = app; // ✅ สำคัญมาก!!!

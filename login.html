@@ -270,6 +270,12 @@
             <div id="errorMessage" class="error-message"></div>
             <div id="successMessage" class="success-message"></div>
 
+            <div style="background: #e8f5e9; border-left: 4px solid #28a745; padding: 12px; border-radius: 4px; margin-bottom: 20px; font-size: 13px; color: #333;">
+                <strong>Demo Credentials:</strong><br>
+                Email: <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">test@example.com</code><br>
+                Password: <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">password123</code>
+            </div>
+
             <form id="loginForm" method="post">
                 <div class="form-group">
                     <label for="email">Email Address</label>
@@ -372,8 +378,64 @@
             loading.style.display = 'block';
 
             try {
-                // Simulate API call (replace with real backend endpoint)
-                const response = await fetch('http://localhost:5500/api/login', {
+                // Demo credentials for testing
+                const demoCredentials = {
+                    'test@example.com': 'password123',
+                    'user@demo.com': 'password123',
+                    'admin@shop.com': 'password123'
+                };
+
+                // Check if using demo credentials
+                if (demoCredentials[email] === password) {
+                    // Create demo user object
+                    const firstName = email.split('@')[0];
+                    const demoUser = {
+                        firstName: firstName,
+                        lastName: 'Demo User',
+                        email: email,
+                        phone: '(123) 456-7890',
+                        country: 'United States',
+                        joinDate: new Date().toISOString(),
+                        name: `${firstName} Demo User`
+                    };
+
+                    // Store auth token and user info
+                    localStorage.setItem('authToken', 'demo-token-' + Date.now());
+                    localStorage.setItem('user', JSON.stringify(demoUser));
+
+                    successMessage.innerHTML = 'Login successful! Redirecting to profile...';
+                    successMessage.style.display = 'block';
+
+                    // Redirect after 1.5 seconds
+                    setTimeout(() => {
+                        window.location.href = 'profile.html';
+                    }, 1500);
+                    return;
+                }
+
+                // Check locally stored users (for signup testing)
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const foundUser = users.find(u => u.email === email && u.password === password);
+                
+                if (foundUser) {
+                    const { password: _, ...userWithoutPassword } = foundUser;
+                    
+                    // Store auth token and user info
+                    localStorage.setItem('authToken', 'local-token-' + Date.now());
+                    localStorage.setItem('user', JSON.stringify(userWithoutPassword));
+
+                    successMessage.innerHTML = 'Login successful! Redirecting to profile...';
+                    successMessage.style.display = 'block';
+
+                    // Redirect after 1.5 seconds
+                    setTimeout(() => {
+                        window.location.href = 'profile.html';
+                    }, 1500);
+                    return;
+                }
+
+                // Try real API call (if backend is available)
+                const response = await fetch('http://localhost:3000/api/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -411,7 +473,8 @@
                 }
             } catch (error) {
                 console.error('Login error:', error);
-                errorMessage.innerHTML = 'An error occurred. Please try again later.';
+                // API not available - show invalid credentials message
+                errorMessage.innerHTML = 'Invalid email or password. Please try again.';
                 errorMessage.style.display = 'block';
             } finally {
                 loading.style.display = 'none';
@@ -435,15 +498,6 @@
             alert(`${provider.charAt(0).toUpperCase() + provider.slice(1)} login coming soon!`);
             // In a real implementation, this would open OAuth dialogs
         }
-
-        // Check if user is already logged in
-        window.addEventListener('DOMContentLoaded', function () {
-            const authToken = localStorage.getItem('authToken');
-            if (authToken) {
-                // User is already logged in, redirect to shop
-                window.location.href = 'shop.html';
-            }
-        });
     </script>
 </body>
 

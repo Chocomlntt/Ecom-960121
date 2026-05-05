@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Jef Shop</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    <link rel="stylesheet" href="assets/css/templatemo.css">
+    <style>
+        .profile-container {
+            min-height: calc(100vh - 200px);
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8f5e9 100%);
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 30px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 48px;
+            color: white;
+        }
+
+        .profile-header h1 {
+            color: #333;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .profile-header p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+
+        .profile-content {
+            margin-bottom: 30px;
+        }
+
+        .profile-section {
+            margin-bottom: 30px;
+        }
+
+        .profile-section h3 {
+            color: #28a745;
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .profile-item:last-child {
+            border-bottom: none;
+        }
+
+        .profile-label {
+            color: #666;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .profile-value {
+            color: #333;
+            font-size: 14px;
+            word-break: break-all;
+        }
+
+        .profile-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .btn-edit {
+            padding: 12px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-edit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-logout {
+            padding: 12px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-logout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3);
+        }
+
+        .not-logged-in {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .not-logged-in h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .not-logged-in p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .not-logged-in .btn-login {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .not-logged-in .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+        }
+
+        .member-since {
+            background: #f0f8f4;
+            padding: 15px;
+            border-left: 4px solid #28a745;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+
+        .member-since p {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        @media (max-width: 576px) {
+            .profile-card {
+                padding: 20px;
+            }
+
+            .profile-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Start Header -->
+    <header class="bg-light py-3 py-md-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <h1 class="h4 mb-0"><a href="index.html" class="text-decoration-none text-success">Jef Shop</a></h1>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="index.html" class="btn btn-link text-decoration-none text-dark me-2">Home</a>
+                    <a href="shop.html" class="btn btn-link text-decoration-none text-dark">Shop</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- End Header -->
+
+    <!-- Profile Container -->
+    <div class="profile-container">
+        <div id="loggedInContent" style="display: none;">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <i class="fa fa-user"></i>
+                    </div>
+                    <h1 id="profileName">User Name</h1>
+                    <p id="profileEmail">user@email.com</p>
+                </div>
+
+                <div class="profile-content">
+                    <div class="profile-section">
+                        <h3><i class="fa fa-info-circle"></i> Account Information</h3>
+                        <div class="profile-item">
+                            <span class="profile-label">Full Name:</span>
+                            <span class="profile-value" id="fullName">-</span>
+                        </div>
+                        <div class="profile-item">
+                            <span class="profile-label">Email:</span>
+                            <span class="profile-value" id="email">-</span>
+                        </div>
+                        <div class="profile-item">
+                            <span class="profile-label">Phone:</span>
+                            <span class="profile-value" id="phone">-</span>
+                        </div>
+                        <div class="profile-item">
+                            <span class="profile-label">Country:</span>
+                            <span class="profile-value" id="country">-</span>
+                        </div>
+                    </div>
+
+                    <div class="member-since">
+                        <p>
+                            <i class="fa fa-calendar-check"></i>
+                            <strong>Member Since:</strong> <span id="memberSince">-</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="profile-actions">
+                    <button class="btn-edit" onclick="editProfile()">
+                        <i class="fa fa-edit"></i> Edit Profile
+                    </button>
+                    <button class="btn-logout" onclick="handleLogout()">
+                        <i class="fa fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="notLoggedInContent" style="display: none;">
+            <div class="not-logged-in">
+                <h2>Not Logged In</h2>
+                <p>Please login to view your profile and manage your account.</p>
+                <a href="login.html" class="btn-login">Go to Login</a>
+            </div>
+        </div>
+    </div>
+    <!-- End Profile Container -->
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4 mt-5">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-12">
+                    <p class="mb-0">
+                        Copyright &copy; 2021 Company Name 
+                        | Designed by <a rel="sponsored" href="https://templatemo.com" target="_blank" class="text-success">TemplateMo</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Load and display user profile
+        function loadProfile() {
+            const authToken = localStorage.getItem('authToken');
+            let user = null;
+            
+            try {
+                user = JSON.parse(localStorage.getItem('user') || 'null');
+            } catch (e) {
+                console.error('Error parsing user data:', e);
+                user = null;
+            }
+
+            // Check if user is logged in (authToken is the main indicator)
+            if (authToken) {
+                // User is logged in
+                document.getElementById('loggedInContent').style.display = 'block';
+                document.getElementById('notLoggedInContent').style.display = 'none';
+
+                // Display user information
+                const fullName = user.firstName && user.lastName 
+                    ? `${user.firstName} ${user.lastName}` 
+                    : user.name || 'User';
+                
+                document.getElementById('profileName').textContent = fullName;
+                document.getElementById('profileEmail').textContent = user.email || '-';
+                document.getElementById('fullName').textContent = fullName;
+                document.getElementById('email').textContent = user.email || '-';
+                document.getElementById('phone').textContent = user.phone || '-';
+                document.getElementById('country').textContent = user.country || '-';
+                
+                // Set member since date
+                const joinDate = new Date(user.joinDate || Date.now());
+                document.getElementById('memberSince').textContent = joinDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            } else {
+                // User is not logged in
+                document.getElementById('loggedInContent').style.display = 'none';
+                document.getElementById('notLoggedInContent').style.display = 'block';
+            }
+        }
+
+        // Handle logout
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear localStorage
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('user');
+
+                // Redirect to login
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Edit profile (placeholder)
+        function editProfile() {
+            alert('Edit profile feature coming soon!');
+            // In a real implementation, this would open an edit modal or navigate to an edit page
+        }
+
+        // Load profile on page load
+        window.addEventListener('DOMContentLoaded', loadProfile);
+    </script>
+</body>
+
+</html>

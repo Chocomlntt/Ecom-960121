@@ -517,8 +517,8 @@
             loading.style.display = 'block';
 
             try {
-                // Simulate API call (replace with real backend endpoint)
-                const response = await fetch('http://localhost:5500/api/register', {
+                // Try API call first (if backend is available)
+                const response = await fetch('http://localhost:3000/api/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -541,18 +541,18 @@
                     successMessage.style.display = 'block';
 
                     // Redirect after 2 seconds
-                    setTimeout(() => {
-                        window.location.href = 'login.html';
-                    }, 2000);
+                    //setTimeout(() => {
+                    //    window.location.href = 'login.html';
+                    //}, 2000);
                 } else {
-                    errorMessage.innerHTML = data.message || 'Sign up failed. Please try again.';
-                    errorMessage.style.display = 'block';
+                    throw new Error(data.message || 'API sign up failed');
                 }
             } catch (error) {
-                console.error('Signup error:', error);
-                errorMessage.innerHTML = 'An error occurred. Please try again later.';
-                errorMessage.style.display = 'block';
-            } finally {
+    console.error('Signup error:', error);
+
+    errorMessage.innerHTML = 'Register failed. Backend error.';
+    errorMessage.style.display = 'block';
+} finally {
                 loading.style.display = 'none';
             }
         });

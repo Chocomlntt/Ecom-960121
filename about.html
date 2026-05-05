@@ -391,6 +391,23 @@ https://templatemo.com/tm-559-zay-shop
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/templatemo.js"></script>
     <script src="assets/js/custom.js"></script>
+    <script>
+    // Redirect user icon based on login status
+    document.addEventListener('DOMContentLoaded', function () {
+      const userLinks = document.querySelectorAll('a[href="login.html"]');
+      const authToken = localStorage.getItem('authToken');
+      
+      userLinks.forEach(link => {
+        if (link.querySelector('.fa-user')) {
+          if (authToken) {
+            link.href = 'profile.html';
+          } else {
+            link.href = 'login.html';
+          }
+        }
+      });
+    });
+    </script>
     <!-- End Script -->
 </body>
 
