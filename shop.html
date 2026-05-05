@@ -868,10 +868,9 @@ async function fetchProducts(part) {
 
     // Convert response into JavaScript object (array of products)
     const products = await response.json();
-    allProducts = products;
 
     // Pass data to UI renderer (Step 3)
-    renderUI(products);
+    renderUI(products.data);
 
   } catch (error) {
     console.error("Fetch Error:", error);
@@ -892,6 +891,9 @@ function renderUI(products) {
 
   // Clear old content
   container.innerHTML = "";
+
+  // Store products globally for cart functionality
+  allProducts = products;
 
   // Loop through each product object
   products.forEach(product => {
