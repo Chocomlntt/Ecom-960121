@@ -852,7 +852,7 @@ https://templatemo.com/tm-559-jef-shop
 function requestProducts() {
   // This function starts the whole process
   // It calls fetchProducts to get data from JSON
-  fetchProducts("http://localhost:5500/api/products");
+  fetchProducts("http://localhost:3000/api/products");
 }
 // Step 2: Fetch data from JSON file (Client → Server)
 async function fetchProducts(part) {
@@ -1277,6 +1277,21 @@ if (closeCartButton) {
 const cartBackdrop = document.getElementById('cart-sidebar-backdrop');
 if (cartBackdrop) {
   cartBackdrop.addEventListener('click', closeCartSidebar);
+}
+
+const checkoutButton = document.getElementById('checkout-button');
+if (checkoutButton) {
+  checkoutButton.addEventListener('click', function (event) {
+    event.preventDefault();
+    // Store cart items in localStorage for checkout page
+    const cartItems = getCartItems();
+    if (cartItems.length > 0) {
+      localStorage.setItem('cart', JSON.stringify(cartItems));
+      window.location.href = 'checkout.html';
+    } else {
+      alert('Your cart is empty. Please add items before checkout.');
+    }
+  });
 }
 
 window.addEventListener('DOMContentLoaded', function () {

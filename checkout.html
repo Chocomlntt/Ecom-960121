@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Jef Shop - Checkout</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="assets/img/jef-icon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/jef-icon.png">
+
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/templatemo.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+
+    <!-- Load fonts style after rendering the layout styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <link rel="stylesheet" href="assets/css/fontawesome.min.css">
+
+    <style>
+        .checkout-container {
+            background-color: #f8f9fa;
+            padding: 40px 0;
+        }
+
+        .cart-section, .payment-section {
+            background: white;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .item-price {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .item-quantity {
+            color: #666;
+            margin: 0 10px;
+        }
+
+        .order-summary {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .summary-row.total {
+            border-top: 2px solid #ddd;
+            padding-top: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #28a745;
+            margin-bottom: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 12px;
+        }
+
+        .form-control:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 5px rgba(40, 167, 69, 0.2);
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .form-control.is-invalid {
+            border-color: #dc3545;
+        }
+
+        .btn-checkout {
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-checkout:hover {
+            background-color: #218838;
+        }
+
+        .btn-checkout:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .page-heading {
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('assets/img/banner_img_01.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 100px 0;
+            margin-bottom: 40px;
+        }
+
+        .success-message {
+            padding: 15px;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .card-input-group {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        .card-input-group .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .card-input-group .form-group:last-child {
+            flex: 0.5;
+        }
+
+        .empty-cart-message {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Start Top Nav -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between">
+                <div>
+                    <i class="fa fa-envelope mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:info@company.com">info@company.com</a>
+                    <i class="fa fa-phone mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
+                </div>
+                <div>
+                    <a class="text-light" href="https://fb.com/templatemo" target="_blank" rel="sponsored"><i class="fab fa-facebook-f fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://twitter.com/" target="_blank"><i class="fab fa-twitter fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin fa-sm fa-fw"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Close Top Nav -->
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a class="navbar-brand text-success logo h1 align-self-center" href="index.html">
+                Jef Shop
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link link-dark" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link link-dark" href="shop.html">Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link link-dark" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link link-dark" href="contact.html">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link link-dark" href="checkout.html">
+                            <i class="fa fa-fw fa-cart-arrow-down me-1"></i>
+                            Checkout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Close Navigation -->
+
+    <!-- Page Heading -->
+    <div class="page-heading">
+        <h1>Checkout</h1>
+        <p>Complete your purchase</p>
+    </div>
+
+    <!-- Start Checkout -->
+    <section class="checkout-container">
+        <div class="container">
+            <div class="row">
+                <!-- Cart Items Section -->
+                <div class="col-lg-7">
+                    <div class="cart-section">
+                        <h2 class="mb-4">Order Summary</h2>
+                        <div id="cartItems">
+                            <!-- Cart items will be populated here -->
+                        </div>
+                        <div class="order-summary">
+                            <div class="summary-row">
+                                <span>Subtotal:</span>
+                                <span id="subtotal">$0.00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Shipping:</span>
+                                <span id="shipping">$0.00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Tax (10%):</span>
+                                <span id="tax">$0.00</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total:</span>
+                                <span id="total">$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Form Section -->
+                <div class="col-lg-5">
+                    <div class="payment-section">
+                        <h2 class="mb-4">Billing Information</h2>
+                        
+                        <div class="success-message" id="successMessage">
+                            <i class="fa fa-check-circle me-2"></i>
+                            Order placed successfully!
+                        </div>
+
+                        <form id="checkoutForm">
+                            <!-- Email Field -->
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email Address *</label>
+                                <input 
+                                    type="email" 
+                                    class="form-control" 
+                                    id="email" 
+                                    placeholder="Enter your email"
+                                    required
+                                >
+                                <div class="error-message" id="emailError">
+                                    Please enter a valid email address (e.g., user@example.com)
+                                </div>
+                            </div>
+
+                            <!-- Credit Card Field -->
+                            <div class="form-group">
+                                <label for="cardNumber" class="form-label">Credit Card Number *</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="cardNumber" 
+                                    placeholder="1234 5678 9012 3456"
+                                    maxlength="19"
+                                    required
+                                >
+                                <div class="error-message" id="cardError">
+                                    Please enter a valid 16-digit credit card number
+                                </div>
+                            </div>
+
+                            <!-- Card Details -->
+                            <div class="card-input-group">
+                                <div class="form-group">
+                                    <label for="expiry" class="form-label">Expiry Date *</label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="expiry" 
+                                        placeholder="MM/YY"
+                                        maxlength="5"
+                                        required
+                                    >
+                                    <div class="error-message" id="expiryError">
+                                        Please enter a valid date (MM/YY)
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="cvv" class="form-label">CVV *</label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="cvv" 
+                                        placeholder="123"
+                                        maxlength="3"
+                                        required
+                                    >
+                                    <div class="error-message" id="cvvError">
+                                        Please enter a valid CVV (3 digits)
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Full Name -->
+                            <div class="form-group">
+                                <label for="fullName" class="form-label">Full Name *</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="fullName" 
+                                    placeholder="John Doe"
+                                    required
+                                >
+                                <div class="error-message" id="nameError">
+                                    Please enter your full name
+                                </div>
+                            </div>
+
+                            <!-- Address -->
+                            <div class="form-group">
+                                <label for="address" class="form-label">Address *</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="address" 
+                                    placeholder="123 Main Street"
+                                    required
+                                >
+                                <div class="error-message" id="addressError">
+                                    Please enter your address
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn-checkout" id="submitBtn">
+                                Place Order
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Checkout -->
+
+    <!-- Start Footer -->
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-white text-decoration-none">Home</a></li>
+                        <li><a href="shop.html" class="text-white text-decoration-none">Shop</a></li>
+                        <li><a href="about.html" class="text-white text-decoration-none">About</a></li>
+                        <li><a href="contact.html" class="text-white text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h5>Information</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white text-decoration-none">Privacy Policy</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Terms of Service</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Shipping Info</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Returns</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h5>Contact Us</h5>
+                    <p>Email: info@jefshop.com</p>
+                    <p>Phone: 010-020-0340</p>
+                </div>
+                <div class="col-lg-3">
+                    <h5>Follow Us</h5>
+                    <div>
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="bg-light">
+            <div class="text-center">
+                <p>&copy; 2024 Jef Shop. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- End Footer -->
+
+    <script src="assets/js/jquery-1.11.0.min.js"></script>
+    <script src="assets/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/templatemo.js"></script>
+
+    <script>
+        // Email validation regex
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // Credit card validation regex (16 digits)
+        const creditCardRegex = /^\d{16}$/;
+
+        // Expiry date validation regex (MM/YY format)
+        const expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+
+        // CVV validation regex (3 digits)
+        const cvvRegex = /^\d{3}$/;
+
+        // Sample cart data (in a real app, this would come from localStorage or API)
+        const sampleCart = [
+            { id: 1, name: "Premium Wireless Headphones", price: 89.99, quantity: 1 },
+            { id: 2, name: "USB-C Cable Pack", price: 24.99, quantity: 2 },
+            { id: 3, name: "Phone Stand", price: 15.99, quantity: 1 }
+        ];
+
+        // Constants
+        const TAX_RATE = 0.10;
+        const SHIPPING_COST = 10.00;
+
+        // Initialize the page
+        function initializeCheckout() {
+            loadCartItems();
+            calculateTotals();
+            attachEventListeners();
+        }
+
+        // Load and display cart items
+        function loadCartItems() {
+            const cartItems = getCartFromStorage() || sampleCart;
+            const cartItemsContainer = document.getElementById('cartItems');
+
+            if (cartItems.length === 0) {
+                cartItemsContainer.innerHTML = '<div class="empty-cart-message"><p>Your cart is empty. <a href="shop.html">Continue shopping</a></p></div>';
+                return;
+            }
+
+            let html = '';
+            cartItems.forEach(item => {
+                const itemTotal = (item.price * item.quantity).toFixed(2);
+                html += `
+                    <div class="cart-item">
+                        <div class="item-info">
+                            <div class="item-name">${item.name}</div>
+                            <div>
+                                <span class="item-quantity">Qty: ${item.quantity}</span>
+                                <span class="item-price">$${item.price.toFixed(2)}</span>
+                            </div>
+                        </div>
+                        <div class="item-price">$${itemTotal}</div>
+                    </div>
+                `;
+            });
+
+            cartItemsContainer.innerHTML = html;
+        }
+
+        // Get cart from localStorage
+        function getCartFromStorage() {
+            try {
+                const cart = localStorage.getItem('cart');
+                return cart ? JSON.parse(cart) : null;
+            } catch (e) {
+                console.log('Using sample cart data');
+                return null;
+            }
+        }
+
+        // Calculate totals
+        function calculateTotals() {
+            const cartItems = getCartFromStorage() || sampleCart;
+            
+            const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * TAX_RATE;
+            const total = subtotal + tax + SHIPPING_COST;
+
+            document.getElementById('subtotal').textContent = '$' + subtotal.toFixed(2);
+            document.getElementById('shipping').textContent = '$' + SHIPPING_COST.toFixed(2);
+            document.getElementById('tax').textContent = '$' + tax.toFixed(2);
+            document.getElementById('total').textContent = '$' + total.toFixed(2);
+        }
+
+        // Attach event listeners for real-time validation
+        function attachEventListeners() {
+            const emailInput = document.getElementById('email');
+            const cardInput = document.getElementById('cardNumber');
+            const expiryInput = document.getElementById('expiry');
+            const cvvInput = document.getElementById('cvv');
+            const form = document.getElementById('checkoutForm');
+
+            // Email validation
+            emailInput.addEventListener('blur', validateEmail);
+            emailInput.addEventListener('input', clearEmailError);
+
+            // Credit card validation with formatting
+            cardInput.addEventListener('input', formatCardNumber);
+            cardInput.addEventListener('blur', validateCard);
+            cardInput.addEventListener('input', clearCardError);
+
+            // Expiry validation
+            expiryInput.addEventListener('input', formatExpiry);
+            expiryInput.addEventListener('blur', validateExpiry);
+
+            // CVV validation
+            cvvInput.addEventListener('input', formatCVV);
+            cvvInput.addEventListener('blur', validateCVV);
+
+            // Form submission
+            form.addEventListener('submit', handleFormSubmit);
+        }
+
+        // Format credit card number with spaces
+        function formatCardNumber(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            let formatted = value.replace(/(\d{4})/g, '$1 ').trim();
+            e.target.value = formatted;
+        }
+
+        // Format expiry date
+        function formatExpiry(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.slice(0, 2) + '/' + value.slice(2, 4);
+            }
+            e.target.value = value;
+        }
+
+        // Format CVV
+        function formatCVV(e) {
+            e.target.value = e.target.value.replace(/\D/g, '').slice(0, 3);
+        }
+
+        // Validate email using regex
+        function validateEmail() {
+            const email = document.getElementById('email').value;
+            const errorElement = document.getElementById('emailError');
+            const input = document.getElementById('email');
+
+            if (emailRegex.test(email)) {
+                errorElement.classList.remove('show');
+                input.classList.remove('is-invalid');
+                return true;
+            } else {
+                errorElement.classList.add('show');
+                input.classList.add('is-invalid');
+                return false;
+            }
+        }
+
+        // Validate credit card using regex
+        function validateCard() {
+            const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+            const errorElement = document.getElementById('cardError');
+            const input = document.getElementById('cardNumber');
+
+            if (creditCardRegex.test(cardNumber)) {
+                errorElement.classList.remove('show');
+                input.classList.remove('is-invalid');
+                return true;
+            } else {
+                errorElement.classList.add('show');
+                input.classList.add('is-invalid');
+                return false;
+            }
+        }
+
+        // Luhn algorithm for credit card validation
+        function luhnCheck(cardNumber) {
+            let sum = 0;
+            let isEven = false;
+
+            for (let i = cardNumber.length - 1; i >= 0; i--) {
+                let digit = parseInt(cardNumber.charAt(i), 10);
+
+                if (isEven) {
+                    digit *= 2;
+                    if (digit > 9) {
+                        digit -= 9;
+                    }
+                }
+
+                sum += digit;
+                isEven = !isEven;
+            }
+
+            return sum % 10 === 0;
+        }
+
+        // Validate expiry date
+        function validateExpiry() {
+            const expiry = document.getElementById('expiry').value;
+            const errorElement = document.getElementById('expiryError');
+            const input = document.getElementById('expiry');
+
+            if (expiryRegex.test(expiry)) {
+                errorElement.classList.remove('show');
+                input.classList.remove('is-invalid');
+                return true;
+            } else {
+                errorElement.classList.add('show');
+                input.classList.add('is-invalid');
+                return false;
+            }
+        }
+
+        // Validate CVV
+        function validateCVV() {
+            const cvv = document.getElementById('cvv').value;
+            const errorElement = document.getElementById('cvvError');
+            const input = document.getElementById('cvv');
+
+            if (cvvRegex.test(cvv)) {
+                errorElement.classList.remove('show');
+                input.classList.remove('is-invalid');
+                return true;
+            } else {
+                errorElement.classList.add('show');
+                input.classList.add('is-invalid');
+                return false;
+            }
+        }
+
+        // Clear error messages
+        function clearEmailError() {
+            document.getElementById('emailError').classList.remove('show');
+            document.getElementById('email').classList.remove('is-invalid');
+        }
+
+        function clearCardError() {
+            document.getElementById('cardError').classList.remove('show');
+            document.getElementById('cardNumber').classList.remove('is-invalid');
+        }
+
+        // Handle form submission
+        function handleFormSubmit(e) {
+            e.preventDefault();
+
+            // Validate all fields
+            const isEmailValid = validateEmail();
+            const isCardValid = validateCard();
+            const isExpiryValid = validateExpiry();
+            const isCVVValid = validateCVV();
+            
+            const fullName = document.getElementById('fullName').value.trim();
+            const address = document.getElementById('address').value.trim();
+
+            if (!fullName) {
+                document.getElementById('nameError').classList.add('show');
+                return;
+            } else {
+                document.getElementById('nameError').classList.remove('show');
+            }
+
+            if (!address) {
+                document.getElementById('addressError').classList.add('show');
+                return;
+            } else {
+                document.getElementById('addressError').classList.remove('show');
+            }
+
+            // If all validations pass
+            if (isEmailValid && isCardValid && isExpiryValid && isCVVValid) {
+                // Show success message
+                const successMessage = document.getElementById('successMessage');
+                successMessage.classList.add('show');
+
+                // Clear cart and redirect after 2 seconds
+                setTimeout(() => {
+                    // Clear cart from localStorage
+                    localStorage.removeItem('cart');
+                    localStorage.removeItem('jefshop_cart');
+                    document.getElementById('checkoutForm').reset();
+                    successMessage.classList.remove('show');
+                    // Redirect to shop page
+                    window.location.href = 'shop.html';
+                }, 2000);
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initializeCheckout);
+    </script>
+</body>
+
+</html>
