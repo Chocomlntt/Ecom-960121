@@ -712,25 +712,61 @@
 
             // If all validations pass
             if (isEmailValid && isCardValid && isExpiryValid && isCVVValid) {
-                // Show success message
-                const successMessage = document.getElementById('successMessage');
-                successMessage.classList.add('show');
+                // Get cart items
+                const cartItems = getCartFromStorage() || sampleCart;
+                
+                // Get token from localStorage
+                const token = localStorage.getItem('authToken');
+                
+                if (!token) {
+                    alert('Please login first to complete checkout');
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                // Send checkout request to backend
+                fetch('http://localhost:3000/api/checkout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        email: document.getElementById('email').value,
+                        cardNumber: document.getElementById('cardNumber').value.replace(/\s/g, ''),
+                        items: cartItems
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Show success message
+                        const successMessage = document.getElementById('successMessage');
+                        successMessage.classList.add('show');
 
-                // Clear cart and redirect after 2 seconds
-                setTimeout(() => {
-                    // Clear cart from localStorage
-                    localStorage.removeItem('cart');
-                    localStorage.removeItem('jefshop_cart');
-                    document.getElementById('checkoutForm').reset();
-                    successMessage.classList.remove('show');
-                    // Redirect to shop page
-                    window.location.href = 'shop.html';
-                }, 2000);
+                        // Clear cart and redirect after 2 seconds
+                        setTimeout(() => {
+                            // Clear cart from localStorage
+                            localStorage.removeItem('cart');
+                            localStorage.removeItem('jefshop_cart');
+                            document.getElementById('checkoutForm').reset();
+                            successMessage.classList.remove('show');
+                            // Redirect to shop page
+                            window.location.href = 'shop.html';
+                        }, 2000);
+                    } else {
+                        alert(data.message || 'Checkout failed. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Server error. Please try again.');
+                });
             }
         }
-
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', initializeCheckout);
+        console.log("SCRIPT LOADED");
     </script>
 </body>
 

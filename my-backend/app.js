@@ -11,6 +11,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const checkoutRoute = require('./routes/checkout');
+
+// Register checkout route
+app.use('/api', checkoutRoute);
+
 async function findUserByEmail(email) {
   const filePath = path.join(__dirname, 'data', 'users.json');
   const data = await fs.readFile(filePath, 'utf-8');
@@ -93,5 +98,6 @@ app.post('/api/register', async (req, res) => {
 
   res.json({ message: "ok" });
 });
+
 
 module.exports = app; // ✅ สำคัญมาก!!!

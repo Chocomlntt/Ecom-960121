@@ -524,14 +524,10 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        firstName: firstName,
-                        lastName: lastName,
-                        email: email,
-                        phone: phone,
-                        password: password,
-                        country: country,
-                        newsletter: newsletter
-                    })
+    email: document.getElementById('email').value,
+    creditCard: document.getElementById('cardNumber').value.replace(/\s/g, ''),
+    cartItems: cartItems
+})
                 });
 
                 const data = await response.json();
