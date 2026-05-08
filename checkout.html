@@ -715,21 +715,11 @@
                 // Get cart items
                 const cartItems = getCartFromStorage() || sampleCart;
                 
-                // Get token from localStorage
-                const token = localStorage.getItem('authToken');
-                
-                if (!token) {
-                    alert('Please login first to complete checkout');
-                    window.location.href = 'login.html';
-                    return;
-                }
-                
                 // Send checkout request to backend
                 fetch('http://localhost:3000/api/checkout', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         email: document.getElementById('email').value,
